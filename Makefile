@@ -27,7 +27,7 @@ build.%:
 	$(if $(findstring windows, $(OS)), $(eval EXE_SUFFIX:=.exe), $(eval EXE_SUFFIX:=''))
 	@go env -w CGO_ENABLED=0  GOOS=$(OS) GOARCH=$(ARCH)
 	@echo "====>Build binary for ${COMMAND}, with OS: $(OS), ARCH:$(ARCH)"
-	@go build -o $(OUTPUT_DIR)/$(COMMAND)$(EXE_SUFFIX)  $(ROOT_DIR)
+	@go build -o $(OUTPUT_DIR)/$(COMMAND)$(EXE_SUFFIX)  $(ROOT_DIR)/cmd
 
 
 
