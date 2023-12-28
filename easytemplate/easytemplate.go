@@ -1,4 +1,4 @@
-package main
+package easytemplate
 
 import (
 	"fmt"
@@ -35,7 +35,7 @@ func fetchTemplateOptions(templateName, templateRepo string) ([]string, error) {
 	cmd := exec.Command("git", "ls-remote", "--heads", templateRepo)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	optionsRaw := string(output)
 	optionsLines := strings.Split(optionsRaw, "\n")
@@ -60,17 +60,18 @@ func fetchTemplateOptions(templateName, templateRepo string) ([]string, error) {
 	return templateOptions, err
 }
 
-func downLoadTempalate(repo, option, dirName string) {
+func downloadTempalate(repo, option, dirName string) {
 	var err error
 	cmd := exec.Command("git", "clone", "--branch", option, repo, dirName)
 	_, err = cmd.CombinedOutput()
 
 	if err != nil {
-		panic(err)
+		fmt.Printf("download template failed: %v\n", err)
+		return
 	}
 }
 
-func main() {
+func Run() {
 	var templateSearch string
 	var err error
 
@@ -78,7 +79,8 @@ func main() {
 	if len(inputArgs) == 2 {
 		templateSearch = inputArgs[1]
 	} else if len(inputArgs) > 2 {
-		panic("wrong input arguments, you can provide only one template name")
+		fmt.Println("wrong input arguments, you can provide only one template name")
+		return
 	}
 
 	templates := fetchTemplates(templateSearch)
@@ -100,7 +102,7 @@ func main() {
 	_, templateName, err := promptTemplate.Run()
 
 	if err != nil {
-		fmt.Printf("Prompt failed %v\n", err)
+		fmt.Printf("prompt failed %v\n", err)
 		return
 	}
 
@@ -114,14 +116,14 @@ func main() {
 	}
 
 	promptTemplateOptions := promptui.Select{
-		Label: "select a template",
+		Label: "select a version",
 		Items: options,
 	}
 
 	_, templateOption, err := promptTemplateOptions.Run()
 
 	if err != nil {
-		fmt.Printf("Prompt failed %v\n", err)
+		fmt.Printf("prompt failed %v\n", err)
 		return
 	}
 
@@ -133,13 +135,13 @@ func main() {
 	direName, err = promptName.Run()
 
 	if err != nil {
-		fmt.Printf("Prompt failed %v\n", err)
+		fmt.Printf("prompt failed %v\n", err)
 		return
 	}
 
 	if direName == "" {
 		direName = "myproject"
 	}
-	downLoadTempalate(templateRepo, templateOption, direName)
+	downloadTempalate(templateRepo, templateOption, direName)
 
 }
