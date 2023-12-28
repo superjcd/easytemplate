@@ -45,9 +45,7 @@ func fetchTemplateOptions(templateName, templateRepo string) ([]string, error) {
 	for _, line := range optionsLines {
 		if line != "" {
 			re := regexp.MustCompile(`refs/heads/(\w+)`)
-			fmt.Println(line)
 			matches := re.FindStringSubmatch(line)
-			fmt.Print(matches)
 			if matches != nil {
 				repoName := matches[1]
 				templateOptions = append(templateOptions, repoName)
@@ -93,8 +91,6 @@ func main() {
 	for t, _ := range templates {
 		possibleTemplates = append(possibleTemplates, t)
 	}
-
-	fmt.Println(possibleTemplates)
 
 	promptTemplate := promptui.Select{
 		Label: "select a template",
