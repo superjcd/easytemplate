@@ -14,6 +14,7 @@ func fetchTemplates(templateSearch string) map[string]string {
 	allTemplates := make(map[string]string)
 	// add template: repository pair here
 	allTemplates["vue3-vite-ts"] = "https://github.com/superjcd/vue3-vite-ts-template"
+	allTemplates["fastapi-peewee-jwt-scheduler"] = "https://github.com/superjcd/fastapi-peewee-jwt-scheduler"
 
 	if templateSearch != "" {
 		filteredTemplates := make(map[string]string)
@@ -48,7 +49,9 @@ func fetchTemplateOptions(templateName, templateRepo string) ([]string, error) {
 			matches := re.FindStringSubmatch(line)
 			if matches != nil {
 				repoName := matches[1]
-				templateOptions = append(templateOptions, repoName)
+				if repoName != "main" && repoName != "master" {
+					templateOptions = append(templateOptions, repoName)
+				}
 			}
 		}
 	}
@@ -132,6 +135,7 @@ func Run() {
 	promptName := promptui.Prompt{
 		Label: "your project name?[myproject]",
 	}
+
 	direName, err = promptName.Run()
 
 	if err != nil {
