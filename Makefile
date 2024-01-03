@@ -5,7 +5,7 @@
 ROOT_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 OUTPUT_DIR  := $(ROOT_DIR)/build
 PLATFORMS ?=   linux_amd64 windows_amd64
-VERSION = 0.1.0
+VERSION = 0.1.3
 COMMAND = easytemplate
 
 # =============================================================================
